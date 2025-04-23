@@ -9,14 +9,21 @@ import org.example.chat.ChatSession;
 import java.io.IOException;
 
 public class ChatController {
+    private ChatSession session;
+
     @FXML
     private TextArea chatLog;
     @FXML
     private TextField input;
 
+    public void setSession(ChatSession session) {
+        session.setChatController(this);
+        this.session = session;
+    }
+
     @FXML
     public void sendMsg() throws IOException {
-        ChatSession.sendMsg(input.getText());
+        session.sendMsg(input.getText());
         chatLog.setText(chatLog.getText().concat(input.getText()).concat("\n"));
         input.clear();
     }

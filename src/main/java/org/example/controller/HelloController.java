@@ -43,8 +43,10 @@ public class HelloController {
         AppController controller = appLoader.getController();
         controller.initialize(chatView, dictionaryView);
 
-        ChatSession.setChatController(chatLoader.getController());
-        ChatSession.login(username.getText(), roomID.getText(), hostname.getText(), Integer.parseInt(port.getText()));
+        ChatSession session = ChatSession.login(username.getText(), roomID.getText(), hostname.getText(), Integer.parseInt(port.getText()));
+
+        ChatController cont = chatLoader.getController();
+        cont.setSession(session);
 
         stage.setOnCloseRequest(e -> System.exit(0));
         stage.setScene(scene);

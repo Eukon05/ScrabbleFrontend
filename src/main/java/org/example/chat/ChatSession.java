@@ -10,32 +10,15 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class ChatSession {
-    private static ObjectOutputStream out;
-    private static ObjectInputStream in;
-    private static ChatController cont;
+    private final ObjectOutputStream out;
+    private ChatController cont;
 
-    private ChatSession(){}
-
-    public static void setChatController(ChatController cont) {
-        ChatSession.cont = cont;
-    }
-
-    public static void sendMsg(String input) throws IOException {
-        ChatSession.out.writeUTF(input);
-        ChatSession.out.flush();
-    }
-
-    public static void login(String username, String roomID, String hostname, int port) throws IOException {
-        Socket socket = new Socket(hostname, port);
+    private ChatSession(Socket socket) throws IOException {
         out = new ObjectOutputStream(socket.getOutputStream());
-
-        ClientConnectionDTO conn = new ClientConnectionDTO(username, roomID);
-        out.writeObject(conn);
-        out.flush();
 
         new Thread(() -> {
             try {
-                in = new ObjectInputStream(socket.getInputStream());
+                ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
 
                 while (true) {
                     ChatMessage msg = (ChatMessage) in.readObject();
@@ -47,5 +30,25 @@ public class ChatSession {
                 throw new RuntimeException(e);
             }
         }).start();
+    }
+
+    public void setChatController(ChatController cont) {
+        this.cont = cont;
+    }
+
+    public void sendMsg(String input) throws IOException {
+        out.writeUTF(input);
+        out.flush();
+    }
+
+    public static ChatSession login(String username, String roomID, String hostname, int port) throws IOException {
+        Socket socket = new Socket(hostname, port);
+        ChatSession session = new ChatSession(socket);
+
+        ClientConnectionDTO conn = new ClientConnectionDTO(username, roomID);
+        session.out.writeObject(conn);
+        session.out.flush();
+
+        return session;
     }
 }
