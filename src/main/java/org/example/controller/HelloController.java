@@ -4,14 +4,21 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.example.chat.ChatSession;
 
-import java.io.IOException;
-
 public class HelloController {
+    private final Alert connectionAlert = new Alert(Alert.AlertType.ERROR);
+
+    public HelloController() {
+        connectionAlert.setTitle("Error");
+        connectionAlert.setHeaderText("Could not connect to the server!");
+        connectionAlert.setContentText("Check the address and port and try again");
+    }
+
     @FXML
     private TextField username;
 
@@ -28,28 +35,33 @@ public class HelloController {
     private Button loginBtn;
 
     @FXML
-    protected void onLogin() throws IOException {
-        Stage stage = (Stage) loginBtn.getScene().getWindow();
+    protected void onLogin() {
+        try {
+            ChatSession session = ChatSession.login(username.getText(), roomID.getText(), hostname.getText(), Integer.parseInt(port.getText()));
 
-        FXMLLoader appLoader = new FXMLLoader(getClass().getResource("app-view.fxml"));
-        FXMLLoader chatLoader = new FXMLLoader(getClass().getResource("chat-view.fxml"));
-        FXMLLoader dictionaryLoader = new FXMLLoader(getClass().getResource("dictionary-view.fxml"));
+            Stage stage = (Stage) loginBtn.getScene().getWindow();
 
-        Scene scene = new Scene(appLoader.load(), 600, 400);
+            FXMLLoader appLoader = new FXMLLoader(getClass().getResource("app-view.fxml"));
+            FXMLLoader chatLoader = new FXMLLoader(getClass().getResource("chat-view.fxml"));
+            FXMLLoader dictionaryLoader = new FXMLLoader(getClass().getResource("dictionary-view.fxml"));
 
-        Node chatView = chatLoader.load();
-        Node dictionaryView = dictionaryLoader.load();
+            Scene scene = new Scene(appLoader.load(), 600, 400);
 
-        AppController controller = appLoader.getController();
-        controller.initialize(chatView, dictionaryView);
+            Node chatView = chatLoader.load();
+            Node dictionaryView = dictionaryLoader.load();
 
-        ChatSession session = ChatSession.login(username.getText(), roomID.getText(), hostname.getText(), Integer.parseInt(port.getText()));
+            AppController controller = appLoader.getController();
+            controller.initialize(chatView, dictionaryView);
 
-        ChatController cont = chatLoader.getController();
-        cont.setSession(session);
+            ChatController cont = chatLoader.getController();
+            cont.setSession(session);
 
-        stage.setOnCloseRequest(e -> System.exit(0));
-        stage.setScene(scene);
-        stage.show();
+            stage.setOnCloseRequest(e -> System.exit(0));
+            stage.setScene(scene);
+            stage.show();
+        }
+        catch(Exception e) {
+            connectionAlert.showAndWait();
+        }
     }
 }
