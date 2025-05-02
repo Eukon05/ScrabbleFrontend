@@ -6,16 +6,14 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" prefHeight="188.0" prefWidth="380.0" spacing="20.0" xmlns="http://javafx.com/javafx/21.0.7"
-      xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controller.HelloController">
+<VBox alignment="CENTER" prefHeight="188.0" prefWidth="380.0" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controller.HelloController">
     <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
-    <TextField fx:id="username" promptText="Username"/>
-    <TextField fx:id="roomID" promptText="Room ID"/>
+    <TextField fx:id="username" promptText="Username" />
+    <TextField fx:id="roomID" promptText="Room ID" />
     <HBox prefHeight="178.0" prefWidth="340.0">
-        <TextField fx:id="hostname" prefHeight="26.0" prefWidth="382.0" text="localhost"/>
-        <TextField fx:id="port" prefHeight="26.0" prefWidth="126.0" text="1122"/>
+        <TextField fx:id="hostname" prefHeight="26.0" prefWidth="382.0" text="localhost" />
     </HBox>
-    <Button fx:id="loginBtn" mnemonicParsing="false" onAction="#onLogin" text="Login!"/>
+    <Button fx:id="loginBtn" mnemonicParsing="false" onAction="#onLogin" text="Login!" />
 </VBox>
