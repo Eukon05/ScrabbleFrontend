@@ -23,15 +23,6 @@ public class StatusController {
 
             gridPane.add(playerLetters[i], i, 0);
         }
-
-        addLetter('a');
-        addLetter('b');
-        addLetter('c');
-        addLetter('d');
-
-        takeLetter('b');
-        addLetter('e');
-        takeLetter('d');
     }
 
     public boolean takeLetter(char letter) {

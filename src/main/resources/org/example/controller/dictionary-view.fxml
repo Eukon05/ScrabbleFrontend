@@ -5,7 +5,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="74.0" prefWidth="337.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controller.DictionaryController">
+<AnchorPane prefHeight="74.0" prefWidth="331.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controller.DictionaryController">
    <TextField fx:id="input" layoutX="14.0" layoutY="33.0" prefHeight="26.0" prefWidth="250.0" promptText="Type in the word to check" />
    <Label fx:id="result" layoutX="121.0" layoutY="59.0" prefHeight="18.0" prefWidth="114.0" />
    <Button layoutX="264.0" layoutY="33.0" mnemonicParsing="false" onAction="#onCheckBtn" text="Check!" />

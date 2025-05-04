@@ -41,31 +41,35 @@ public class HelloController {
 
             Stage stage = (Stage) loginBtn.getScene().getWindow();
 
-            FXMLLoader appLoader = new FXMLLoader(getClass().getResource("game-view.fxml"));
+            FXMLLoader gameLoader = new FXMLLoader(getClass().getResource("game-view.fxml"));
             FXMLLoader boardLoader = new FXMLLoader(getClass().getResource("board-view.fxml"));
             FXMLLoader chatLoader = new FXMLLoader(getClass().getResource("chat-view.fxml"));
             FXMLLoader statusLoader = new FXMLLoader(getClass().getResource("status-view.fxml"));
             FXMLLoader dictionaryLoader = new FXMLLoader(getClass().getResource("dictionary-view.fxml"));
+            FXMLLoader turnLoader = new FXMLLoader(getClass().getResource("turn-view.fxml"));
 
-            Scene scene = new Scene(appLoader.load(), 1100, 595);
+            Scene scene = new Scene(gameLoader.load(), 1100, 595);
 
             VBox controls = new VBox();
 
             Node chatView = chatLoader.load();
             Node dictionaryView = dictionaryLoader.load();
             Node statusView = statusLoader.load();
+            Node turnView = turnLoader.load();
             Node boardView = boardLoader.load();
 
-            controls.getChildren().addAll(statusView, chatView, dictionaryView);
+            controls.getChildren().addAll(statusView, turnView, chatView, dictionaryView);
 
-            GameController controller = appLoader.getController();
-            controller.initialize(boardView, controls);
+            GameController gameController = gameLoader.getController();
+            gameController.initialize(boardView, controls);
 
             ChatController cont = chatLoader.getController();
             cont.setSession(session);
 
             BoardController boardController = boardLoader.getController();
-            boardController.placeWord("eluwinka", 4, 5, false);
+
+            TurnController turnController = turnLoader.getController();
+            turnController.initialize(boardController);
 
             stage.setOnCloseRequest(e -> System.exit(0));
             stage.setScene(scene);
