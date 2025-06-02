@@ -6,23 +6,33 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.example.chat.ChatSession;
 import org.example.dictionary.Dictionary;
+import org.example.user.UserManager;
 
 public class HelloController {
     private final Alert connectionAlert = new Alert(Alert.AlertType.ERROR);
+    private final Alert loginAlert = new Alert(Alert.AlertType.ERROR);
 
     public HelloController() {
         connectionAlert.setTitle("Error");
         connectionAlert.setHeaderText("Could not connect to the server!");
         connectionAlert.setContentText("Check the address and port and try again");
+
+        loginAlert.setTitle("Error");
+        loginAlert.setHeaderText("Invalid login data!");
+        loginAlert.setContentText("Check your username and password and try again");
     }
 
     @FXML
     private TextField username;
+
+    @FXML
+    private PasswordField password;
 
     @FXML
     private TextField roomID;
@@ -36,6 +46,18 @@ public class HelloController {
     @FXML
     protected void onLogin() {
         try {
+            int loginResponse = UserManager.tryLogin(username.getText(), password.getText(), hostname.getText());
+
+            if(loginResponse == 400) {
+                throw new IllegalArgumentException();
+            }
+            else if(loginResponse == 401) {
+                int registerResponse = UserManager.tryRegister(username.getText(), password.getText(), hostname.getText());
+                if(registerResponse != 200) {
+                    throw new IllegalArgumentException();
+                }
+            }
+
             ChatSession session = ChatSession.login(username.getText(), roomID.getText(), hostname.getText(), 1122);
             Dictionary.setHostname(hostname.getText());
 
@@ -73,7 +95,11 @@ public class HelloController {
 
             stage.setOnCloseRequest(e -> System.exit(0));
             stage.setScene(scene);
+            stage.centerOnScreen();
             stage.show();
+        }
+        catch (IllegalArgumentException e){
+            loginAlert.showAndWait();
         }
         catch(Exception e) {
             e.printStackTrace();
