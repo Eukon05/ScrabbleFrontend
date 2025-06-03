@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<VBox alignment="CENTER" prefHeight="188.0" prefWidth="380.0" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controller.HelloController">
+<VBox alignment="CENTER" prefHeight="228.0" prefWidth="380.0" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controller.HelloController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
     <TextField fx:id="username" promptText="Username" />
+   <PasswordField fx:id="password" promptText="Password" />
     <TextField fx:id="roomID" promptText="Room ID" />
     <HBox prefHeight="178.0" prefWidth="340.0">
         <TextField fx:id="hostname" prefHeight="26.0" prefWidth="382.0" text="localhost" />

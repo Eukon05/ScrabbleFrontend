@@ -1,6 +1,7 @@
 open module org.example {
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.net.http;
 
 
     exports org.example;
