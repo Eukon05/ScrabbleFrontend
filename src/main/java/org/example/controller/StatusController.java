@@ -42,6 +42,14 @@ public class StatusController {
         return false;
     }
 
+    public void clearLetters(){
+        for(Label letter : playerLetters) {
+            letter.setText("");
+            letter.setStyle("");
+        }
+        currentLetters = 0;
+    }
+
     public void addLetter(char letter) {
         if(currentLetters < 7) {
             playerLetters[currentLetters].setText(String.valueOf(Character.toUpperCase(letter)));
