@@ -6,9 +6,9 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="222.0" prefWidth="331.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controller.ChatController">
-   <TextArea fx:id="chatLog" editable="false" layoutX="16.0" layoutY="23.0" prefHeight="150.0" prefWidth="300.0" />
-   <TextField fx:id="input" layoutX="16.0" layoutY="177.0" prefHeight="26.0" prefWidth="190.0" promptText="Type here..." />
-   <Button layoutX="209.0" layoutY="177.0" mnemonicParsing="false" onAction="#sendMsg" prefHeight="26.0" prefWidth="108.0" text="Send!" />
+<AnchorPane prefHeight="167.0" prefWidth="331.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controller.ChatController">
+   <TextArea fx:id="chatLog" editable="false" layoutX="16.0" layoutY="23.0" prefHeight="106.0" prefWidth="300.0" />
+   <TextField fx:id="input" layoutX="16.0" layoutY="129.0" prefHeight="26.0" prefWidth="190.0" promptText="Type here..." />
+   <Button layoutX="206.0" layoutY="129.0" mnemonicParsing="false" onAction="#sendMsg" prefHeight="26.0" prefWidth="108.0" text="Send!" />
    <Label layoutX="16.0" layoutY="5.0" text="Game chat:" />
 </AnchorPane>

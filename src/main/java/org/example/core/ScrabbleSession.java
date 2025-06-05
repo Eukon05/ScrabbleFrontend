@@ -1,6 +1,7 @@
 package org.example.core;
 
 import javafx.application.Platform;
+import javafx.scene.paint.Color;
 import org.example.controller.BoardController;
 import org.example.controller.StatusController;
 import org.example.controller.TurnController;
@@ -26,6 +27,8 @@ public class ScrabbleSession {
     }
 
     public void setStatusController(StatusController statusController) {
+        statusController.setSession(this);
+        statusController.addPlayer(username);
         this.statusController = statusController;
     }
 
@@ -46,8 +49,16 @@ public class ScrabbleSession {
                     String response = (String) in.readObject();
                     System.out.println(response);
 
-                    if(response.equals("TURN " + username)) {
-                        Platform.runLater(() -> turnController.setVisibility(true));
+                    if(response.equals("START")){
+                        Platform.runLater(() -> statusController.hideStart());
+                    }
+                    else if(response.startsWith("TURN")) {
+                        Platform.runLater(() -> {
+                            statusController.setStatus("%s's turn".formatted(response.split(" ")[1]));
+
+                            if(response.contains(username))
+                                turnController.setVisibility(true);
+                        });
                     }
                     else if(response.startsWith("RACK")){
                         Platform.runLater(() -> statusController.clearLetters());
@@ -58,12 +69,25 @@ public class ScrabbleSession {
                         }
                     }
                     else if(response.equals("INVALID")) {
-                        Platform.runLater(() -> turnController.setVisibility(true));
+                        Platform.runLater(() -> {
+                            statusController.setStatus("Invalid move! Try again!", Color.RED);
+                            turnController.setVisibility(true);
+                        });
 
                     }
                     else if(response.startsWith("PLACE")) {
                         String[] move = response.split(" ");
                         Platform.runLater(() -> boardController.placeWord(move[1], Integer.parseInt(move[3]), move[2].charAt(0), move[4].charAt(0) == 'V'));
+                    }
+                    else if (response.startsWith("PLAYERS")) {
+                        String[] players = response.split(" ");
+                        for(int i = 1; i < players.length; i++){
+                            String nick = players[i];
+                            Platform.runLater(() -> statusController.addPlayer(nick));
+                        }
+                    }
+                    else if (response.startsWith("JOIN")) {
+                        Platform.runLater(() -> statusController.addPlayer(response.split(" ")[1]));
                     }
                 }
             }
@@ -95,6 +119,12 @@ public class ScrabbleSession {
     public void skip() throws IOException {
         Platform.runLater(() -> turnController.setVisibility(false));
         out.writeObject("SKIP");
+        out.flush();
+    }
+
+    public void startGame() throws IOException {
+        Platform.runLater(() -> statusController.hideStart());
+        out.writeObject("SCRABBLE");
         out.flush();
     }
 
