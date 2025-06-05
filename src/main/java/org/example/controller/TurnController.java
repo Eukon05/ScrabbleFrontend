@@ -5,6 +5,9 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import org.example.core.ScrabbleSession;
+
+import java.io.IOException;
 
 public class TurnController {
     @FXML
@@ -22,23 +25,31 @@ public class TurnController {
     @FXML
     private CheckBox vertCheck;
 
-    private BoardController boardController;
+    private ScrabbleSession session;
 
-    public void initialize(BoardController boardController) {
-        this.boardController = boardController;
+    public void initialize() {
 
         for(int i = 1; i < 16; i++){
             rowBox.getItems().add(i);
             colBox.getItems().add((char)('A' + i - 1));
         }
+
+        anchorPane.setVisible(false);
     }
 
-    public void toggleVisibility(){
-        anchorPane.setVisible(!anchorPane.isVisible());
+    public void setVisibility(boolean visible){
+        anchorPane.setVisible(visible);
     }
 
-    public void attemptPlace(){
-        boardController.placeWord(wordField.getText(), rowBox.getValue(), colBox.getValue(), vertCheck.isSelected());
-        toggleVisibility();
+    public void setSession(ScrabbleSession session) {
+        this.session = session;
+    }
+
+    public void attemptPlace() throws IOException {
+        session.attemptPlace(wordField.getText(), rowBox.getValue(), colBox.getValue(), vertCheck.isSelected());
+    }
+
+    public void skip() throws IOException {
+        session.skip();
     }
 }

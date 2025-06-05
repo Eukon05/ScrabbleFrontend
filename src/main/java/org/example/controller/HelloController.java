@@ -11,6 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.example.chat.ChatSession;
+import org.example.core.ScrabbleSession;
 import org.example.dictionary.Dictionary;
 import org.example.user.UserManager;
 
@@ -91,7 +92,17 @@ public class HelloController {
             BoardController boardController = boardLoader.getController();
 
             TurnController turnController = turnLoader.getController();
-            turnController.initialize(boardController);
+            turnController.initialize();
+
+            StatusController statusController = statusLoader.getController();
+            statusController.initialize();
+
+            ScrabbleSession scrabbleSession = ScrabbleSession.login(username.getText(), roomID.getText(), hostname.getText(), 1123);
+            scrabbleSession.setTurnController(turnController);
+            scrabbleSession.setStatusController(statusController);
+            scrabbleSession.setBoardController(boardController);
+
+            scrabbleSession.start();
 
             stage.setOnCloseRequest(e -> System.exit(0));
             stage.setScene(scene);
