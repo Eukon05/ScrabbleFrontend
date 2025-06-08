@@ -9,27 +9,15 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class ChatSession {
+public class ChatSession implements Runnable {
+    private final Socket socket;
     private final ObjectOutputStream out;
+
     private ChatController cont;
 
     private ChatSession(Socket socket) throws IOException {
+        this.socket = socket;
         out = new ObjectOutputStream(socket.getOutputStream());
-
-        new Thread(() -> {
-            try {
-                ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-
-                while (true) {
-                    ChatMessage msg = (ChatMessage) in.readObject();
-                    System.out.println(msg);
-                    Platform.runLater(() -> cont.updateLog(msg));
-                }
-            }
-            catch (IOException | ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-        }).start();
     }
 
     public void setChatController(ChatController cont) {
@@ -50,5 +38,20 @@ public class ChatSession {
         session.out.flush();
 
         return session;
+    }
+
+    @Override
+    public void run() {
+        try(ObjectInputStream in = new ObjectInputStream(socket.getInputStream())) {
+
+            while (!socket.isClosed()) {
+                ChatMessage msg = (ChatMessage) in.readObject();
+                System.out.println(msg);
+                Platform.runLater(() -> cont.updateLog(msg));
+            }
+        }
+        catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
