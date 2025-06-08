@@ -10,8 +10,23 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ScrabbleSession implements Runnable{
+    private static final Logger LOGGER = Logger.getLogger(ScrabbleSession.class.getName());
+
+    static {
+        try {
+            FileHandler fileHandler = new FileHandler("game.log");
+            LOGGER.addHandler(fileHandler);
+            LOGGER.setLevel(Level.ALL);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private final Socket socket;
     private final ObjectOutputStream out;
     private final String username;
@@ -47,18 +62,24 @@ public class ScrabbleSession implements Runnable{
         String move = "PLACE %s %s %d %s".formatted(word, col, row, vertical ? 'V' : 'H');
         out.writeObject(move);
         out.flush();
+
+        LOGGER.fine("Attempting to perform move: %s".formatted(move));
     }
 
     public void skip() throws IOException {
         Platform.runLater(() -> turnController.setVisibility(false));
         out.writeObject("SKIP");
         out.flush();
+
+        LOGGER.fine("Skipping turn");
     }
 
     public void startGame() throws IOException {
         Platform.runLater(() -> statusController.hideStart());
         out.writeObject("SCRABBLE");
         out.flush();
+
+        LOGGER.fine("Starting game");
     }
 
     public static ScrabbleSession login(String username, String roomID, String hostname, int port) throws IOException {
@@ -68,6 +89,7 @@ public class ScrabbleSession implements Runnable{
         game.out.writeObject(new ClientConnectionDTO(username, roomID));
         game.out.flush();
 
+        LOGGER.info("Connected to %s:%d/%s".formatted(hostname, port, roomID));
         return game;
     }
 
@@ -76,7 +98,7 @@ public class ScrabbleSession implements Runnable{
         try(ObjectInputStream in = new ObjectInputStream(socket.getInputStream())) {
             while (!socket.isClosed()) {
                 String response = (String) in.readObject();
-                System.out.println(response);
+                LOGGER.fine(response);
 
                 if(response.equals("START")){
                     Platform.runLater(() -> statusController.hideStart());
@@ -122,7 +144,7 @@ public class ScrabbleSession implements Runnable{
         }
         catch (IOException e) {
             e.printStackTrace();
-            System.out.println("Disconnected from server.");
+            LOGGER.info("Disconnected from server.");
         }
         catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
