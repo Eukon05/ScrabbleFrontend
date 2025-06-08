@@ -24,12 +24,14 @@ public class ChatController {
     @FXML
     public void sendMsg() throws IOException {
         session.sendMsg(input.getText());
-        chatLog.setText(chatLog.getText().concat(input.getText()).concat("\n"));
+        String formattedMessage = "YOU: " + input.getText();
+        chatLog.setText(chatLog.getText().concat(formattedMessage).concat("\n"));
         input.clear();
     }
 
     @FXML
     public void updateLog(ChatMessage message){
-        chatLog.setText(chatLog.getText().concat(String.join(": ", message.nickname(), message.content())).concat("\n"));
+        String formattedMsg = message.nickname().concat(": ").concat(message.content());
+        chatLog.setText(chatLog.getText().concat(formattedMsg).concat("\n"));
     }
 }
