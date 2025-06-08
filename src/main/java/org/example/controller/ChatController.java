@@ -30,6 +30,6 @@ public class ChatController {
 
     @FXML
     public void updateLog(ChatMessage message){
-        chatLog.setText(chatLog.getText().concat(message.toString()).concat("\n"));
+        chatLog.setText(chatLog.getText().concat(String.join(": ", message.nickname(), message.content())).concat("\n"));
     }
 }

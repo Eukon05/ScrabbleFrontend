@@ -15,7 +15,11 @@ import org.example.core.ScrabbleSession;
 import org.example.dictionary.Dictionary;
 import org.example.user.UserManager;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 public class HelloController {
+    private final ExecutorService executor = Executors.newFixedThreadPool(2);
     private final Alert connectionAlert = new Alert(Alert.AlertType.ERROR);
     private final Alert loginAlert = new Alert(Alert.AlertType.ERROR);
 
@@ -59,7 +63,7 @@ public class HelloController {
                 }
             }
 
-            ChatSession session = ChatSession.login(username.getText(), roomID.getText(), hostname.getText(), 1122);
+            ChatSession chatSession = ChatSession.login(username.getText(), roomID.getText(), hostname.getText(), 1122);
             Dictionary.setHostname(hostname.getText());
 
             Stage stage = (Stage) loginBtn.getScene().getWindow();
@@ -87,7 +91,7 @@ public class HelloController {
             gameController.initialize(boardView, controls);
 
             ChatController cont = chatLoader.getController();
-            cont.setSession(session);
+            cont.setSession(chatSession);
 
             BoardController boardController = boardLoader.getController();
 
@@ -102,7 +106,8 @@ public class HelloController {
             scrabbleSession.setStatusController(statusController);
             scrabbleSession.setBoardController(boardController);
 
-            scrabbleSession.start();
+            executor.submit(chatSession);
+            executor.submit(scrabbleSession);
 
             stage.setOnCloseRequest(e -> System.exit(0));
             stage.setScene(scene);
