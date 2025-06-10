@@ -11,7 +11,10 @@ import org.example.core.ScrabbleSession;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
+import static org.example.controller.BoardController.getLetterScore;
 
 public class StatusController {
     @FXML
@@ -25,6 +28,9 @@ public class StatusController {
 
     @FXML
     private Button startButton;
+
+    @FXML
+    private Label scoresLabel;
 
     private ScrabbleSession session;
     private List<String> playerList = new ArrayList<>();
@@ -73,8 +79,8 @@ public class StatusController {
 
     public void addLetter(char letter) {
         if(currentLetters < 7) {
-            playerLetters[currentLetters].setText(String.valueOf(Character.toUpperCase(letter)));
-            playerLetters[currentLetters].setStyle("-fx-border-color: white; -fx-text-fill: white; -fx-background-color: #328720;");
+            playerLetters[currentLetters].setText(String.valueOf(Character.toUpperCase(letter)) + getLetterScore(letter));
+            playerLetters[currentLetters].setStyle("-fx-border-color: white; -fx-text-fill: #FFFADC; -fx-background-color: #8C6A5D;");
             currentLetters++;
         }
     }
@@ -94,6 +100,20 @@ public class StatusController {
     public void setStatus(String status, Color color) {
         statusLabel.setText(status);
         statusLabel.setTextFill(color);
+    }
+
+    public void setScores(String scores) {
+        /*String [] parts = scores.split("|");
+        ArrayList<String> sortedScores = new ArrayList<>();
+        for (int i=1; i < parts.length; i++) {
+            sortedScores.add(parts[i]);
+        }
+        Collections.sort(sortedScores);
+        String text = new String();
+        for (String s : sortedScores) {
+            text += s + " | ";
+        }*/
+        scoresLabel.setText(scores);
     }
 
     public void addPlayer(String player) {
