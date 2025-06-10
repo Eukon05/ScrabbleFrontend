@@ -133,6 +133,7 @@ public class BoardController {
                 return " | 3";
             case 'F':
             case 'H':
+            case 'V':
             case 'W':
             case 'Y':
                 return " | 4";
