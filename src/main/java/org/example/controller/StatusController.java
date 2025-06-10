@@ -11,7 +11,6 @@ import org.example.core.ScrabbleSession;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static org.example.controller.BoardController.getLetterScore;
@@ -50,23 +49,6 @@ public class StatusController {
         }
 
         statusLabel.setText("Waiting for the game to start...");
-    }
-
-    public boolean takeLetter(char letter) {
-        letter = Character.toUpperCase(letter);
-        for(int i = 0; i < currentLetters; i++) {
-            if(playerLetters[i].getText().equals(String.valueOf(letter))) {
-                for(int j = i + 1; j < currentLetters; j++)
-                    playerLetters[j - 1].setText(playerLetters[j].getText());
-
-                currentLetters--;
-                playerLetters[currentLetters].setText("");
-                playerLetters[currentLetters].setStyle("");
-
-                return true;
-            }
-        }
-        return false;
     }
 
     public void clearLetters(){
@@ -118,11 +100,6 @@ public class StatusController {
 
     public void addPlayer(String player) {
         playerList.add(player);
-        playerLabel.setText("Players: " + String.join(", ", playerList));
-    }
-
-    public void removePlayer(String player) {
-        playerList.remove(player);
         playerLabel.setText("Players: " + String.join(", ", playerList));
     }
 

@@ -96,10 +96,7 @@ public class HelloController {
             BoardController boardController = boardLoader.getController();
 
             TurnController turnController = turnLoader.getController();
-            turnController.initialize();
-
             StatusController statusController = statusLoader.getController();
-            statusController.initialize();
 
             ScrabbleSession scrabbleSession = ScrabbleSession.login(username.getText(), roomID.getText(), hostname.getText(), 1123);
             scrabbleSession.setTurnController(turnController);
