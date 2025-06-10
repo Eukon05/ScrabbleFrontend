@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.example.controller.BoardController.getLetterScore;
+
 public class StatusController {
     @FXML
     private GridPane gridPane;
@@ -73,8 +75,8 @@ public class StatusController {
 
     public void addLetter(char letter) {
         if(currentLetters < 7) {
-            playerLetters[currentLetters].setText(String.valueOf(Character.toUpperCase(letter)));
-            playerLetters[currentLetters].setStyle("-fx-border-color: white; -fx-text-fill: white; -fx-background-color: #328720;");
+            playerLetters[currentLetters].setText(String.valueOf(Character.toUpperCase(letter)) + getLetterScore(letter));
+            playerLetters[currentLetters].setStyle("-fx-border-color: white; -fx-text-fill: #FFFADC; -fx-background-color: #8C6A5D;");
             currentLetters++;
         }
     }
