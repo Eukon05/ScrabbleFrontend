@@ -1,6 +1,7 @@
 package org.example.core;
 
 import javafx.application.Platform;
+import javafx.scene.control.Alert;
 import javafx.scene.paint.Color;
 import org.example.controller.BoardController;
 import org.example.controller.StatusController;
@@ -12,6 +13,10 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class ScrabbleSession implements Runnable{
+    private static final String END_GAME_TEXT = "Player %s has won!";
+
+    private final Alert endGameAlert = new Alert(Alert.AlertType.INFORMATION);
+    private final Alert fullAlert = new Alert(Alert.AlertType.WARNING);
     private final Socket socket;
     private final ObjectOutputStream out;
     private final String username;
@@ -24,6 +29,15 @@ public class ScrabbleSession implements Runnable{
         this.socket = socket;
         this.username = username;
         out = new ObjectOutputStream(socket.getOutputStream());
+
+        endGameAlert.setHeaderText("Game Over!");
+        endGameAlert.setTitle("Game Over!");
+        endGameAlert.setOnCloseRequest(event -> System.exit(0));
+
+        fullAlert.setTitle("Game in progress!");
+        fullAlert.setHeaderText("This lobby currently has a game in progress!");
+        fullAlert.setContentText("Try joining later or choose another lobby");
+        fullAlert.setOnCloseRequest(event -> System.exit(0));
     }
 
     public void setStatusController(StatusController statusController) {
@@ -121,6 +135,14 @@ public class ScrabbleSession implements Runnable{
 
                 else if (response.startsWith("SCORES")) {
                     Platform.runLater(() -> statusController.setScores(response));
+                }
+                else if (response.startsWith("GAME_END")) {
+                    String[] end = response.split(" ");
+                    endGameAlert.setContentText(END_GAME_TEXT.formatted(end[1]));
+                    Platform.runLater(endGameAlert::showAndWait);
+                }
+                else if (response.equals("FULL")) {
+                    Platform.runLater(fullAlert::showAndWait);
                 }
             }
         }
