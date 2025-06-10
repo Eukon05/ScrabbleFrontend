@@ -11,6 +11,7 @@ import org.example.core.ScrabbleSession;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.example.controller.BoardController.getLetterScore;
@@ -27,6 +28,9 @@ public class StatusController {
 
     @FXML
     private Button startButton;
+
+    @FXML
+    private Label scoresLabel;
 
     private ScrabbleSession session;
     private List<String> playerList = new ArrayList<>();
@@ -96,6 +100,20 @@ public class StatusController {
     public void setStatus(String status, Color color) {
         statusLabel.setText(status);
         statusLabel.setTextFill(color);
+    }
+
+    public void setScores(String scores) {
+        /*String [] parts = scores.split("|");
+        ArrayList<String> sortedScores = new ArrayList<>();
+        for (int i=1; i < parts.length; i++) {
+            sortedScores.add(parts[i]);
+        }
+        Collections.sort(sortedScores);
+        String text = new String();
+        for (String s : sortedScores) {
+            text += s + " | ";
+        }*/
+        scoresLabel.setText(scores);
     }
 
     public void addPlayer(String player) {

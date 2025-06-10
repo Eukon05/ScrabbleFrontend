@@ -33,6 +33,7 @@
         </GridPane>
       <Label fx:id="playerLabel" style="-fx-padding: 5px;" />
       <Label fx:id="statusLabel" style="-fx-padding: 4px;" />
+      <Label fx:id="scoresLabel" style="-fx-padding: 1px;" />
       <Button fx:id="startButton" mnemonicParsing="false" onAction="#startGame" style="-fx-background-color: #f5d93d;" text="Start the game!" />
     </VBox>
 </AnchorPane>

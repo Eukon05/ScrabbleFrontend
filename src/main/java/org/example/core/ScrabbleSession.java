@@ -118,6 +118,10 @@ public class ScrabbleSession implements Runnable{
                 else if (response.startsWith("JOIN")) {
                     Platform.runLater(() -> statusController.addPlayer(response.split(" ")[1]));
                 }
+
+                else if (response.startsWith("SCORES")) {
+                    Platform.runLater(() -> statusController.setScores(response));
+                }
             }
         }
         catch (IOException e) {
