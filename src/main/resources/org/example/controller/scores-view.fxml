@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="19.0" prefWidth="331.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controller.ScoresController">
+   <children>
+      <Button layoutX="16.0" layoutY="1.0" mnemonicParsing="false" onAction="#onOpenModal" prefHeight="26.0" prefWidth="300.0" text="Show highscores" />
+   </children>
+</AnchorPane>
