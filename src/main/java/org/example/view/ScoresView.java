@@ -35,8 +35,11 @@ public class ScoresView {
     @FXML
     private TableColumn<BestScore, Integer> scoreColumn;
 
+    private String address;
+
     @FXML
-    public void initialize() {
+    public void initialize(String hostname) {
+        address = "http://" + hostname + ":8000/best";
         idColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().gameID()).asObject());
         nickColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().nick()));
         dateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().date()));
@@ -48,7 +51,7 @@ public class ScoresView {
 
     private void loadData() {
         try {
-            URL url = new URL("http://localhost:8000/best");
+            URL url = new URL(address);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
 

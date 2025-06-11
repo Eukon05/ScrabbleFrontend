@@ -100,6 +100,9 @@ public class HelloController {
             TurnController turnController = turnLoader.getController();
             StatusController statusController = statusLoader.getController();
 
+            ScoresController scoresController = scoresLoader.getController();
+            scoresController.initialize(hostname.getText());
+
             ScrabbleSession scrabbleSession = ScrabbleSession.login(username.getText(), roomID.getText(), hostname.getText(), 1123);
             scrabbleSession.setTurnController(turnController);
             scrabbleSession.setStatusController(statusController);
