@@ -117,14 +117,21 @@ public class ScoresView {
             int start = json.indexOf(key);
             if (start == -1) return 0;
             start += key.length();
-            int end = json.indexOf(',', start);
-            if (end == -1) end = json.indexOf('}', start);
+
+            int endComma = json.indexOf(',', start);
+            int endBrace = json.indexOf('}', start);
+
+            int end = (endComma != -1 && (endBrace == -1 || endComma < endBrace)) ? endComma : endBrace;
+            if (end == -1) end = json.length();  // na wypadek błędu składniowego
+
             String number = json.substring(start, end).trim();
             return Integer.parseInt(number);
         } catch (Exception e) {
+            System.out.println("Błąd przy parsowaniu liczby z klucza: " + key);
             return 0;
         }
     }
+
 
     private String extractString(String json, String key) {
         try {
