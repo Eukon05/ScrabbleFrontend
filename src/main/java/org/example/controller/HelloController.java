@@ -74,8 +74,9 @@ public class HelloController {
             FXMLLoader statusLoader = new FXMLLoader(getClass().getResource("status-view.fxml"));
             FXMLLoader dictionaryLoader = new FXMLLoader(getClass().getResource("dictionary-view.fxml"));
             FXMLLoader turnLoader = new FXMLLoader(getClass().getResource("turn-view.fxml"));
+            FXMLLoader scoresLoader = new FXMLLoader(getClass().getResource("scores-view.fxml"));
 
-            Scene scene = new Scene(gameLoader.load(), 1100, 595);
+            Scene scene = new Scene(gameLoader.load(), 1100, 592);
 
             VBox controls = new VBox();
 
@@ -84,8 +85,9 @@ public class HelloController {
             Node statusView = statusLoader.load();
             Node turnView = turnLoader.load();
             Node boardView = boardLoader.load();
+            Node scoresView = scoresLoader.load();
 
-            controls.getChildren().addAll(statusView, turnView, chatView, dictionaryView);
+            controls.getChildren().addAll(statusView, turnView, chatView, dictionaryView, scoresView);
 
             GameController gameController = gameLoader.getController();
             gameController.initialize(boardView, controls);

@@ -14,28 +14,15 @@ import java.io.IOException;
 
 
 public class DictionaryController {
+    private static final String GREEN = "#94f288";
+    private static final String RED = "#f28888";
+
     @FXML
     private TextField input;
 
     @FXML
-    private Label result;
-
-    @FXML
     public void onCheckBtn() throws IOException {
         boolean res = Dictionary.checkWord(input.getText());
-        result.setText(res ? "Exists!" : "Does not exist!");
+        input.setStyle("-fx-background-color: " + (res ? GREEN : RED) + ";");
     }
-
-    @FXML
-    public void onOpenModal() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/example/view/BestScores.fxml"));
-        Parent modalRoot = fxmlLoader.load();
-
-        Stage modalStage = new Stage();
-        modalStage.initModality(Modality.APPLICATION_MODAL);
-        modalStage.setTitle("About");
-        modalStage.setScene(new Scene(modalRoot));
-        modalStage.showAndWait();
-    }
-
 }

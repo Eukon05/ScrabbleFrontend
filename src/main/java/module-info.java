@@ -8,4 +8,5 @@ open module org.example {
     exports org.example.controller;
     exports org.example.dictionary;
     exports org.example.chat;
+    exports org.example.view;
 }
